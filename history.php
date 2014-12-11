@@ -53,11 +53,11 @@
 			die;
 	}
 
-	public function handle_graph($expr, $result_type, $result)
+	function handle_graph($expr, $result_type, $result)
 	{
 		echo "graph";
 	}
-	public function handle_sqare($expr, $result_type, $result)
+	function handle_sqare($expr, $result_type, $result)
 	{
 		echo "square";
 	}
