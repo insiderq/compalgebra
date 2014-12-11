@@ -2,7 +2,7 @@
 	error_reporting (E_ALL);
 	$mysqli = new mysqli("localhost", "root", "pass", "compalgebra");
 	if ($mysqli->connect_errno) {
-    	echo json_encode({"status" => "error", "reason" => "Unable to Connect to Database"});
+    	echo json_encode(array("status" => "error", "reason" => "Unable to Connect to Database"));
     	die;
 	}
 	$type = null;
@@ -34,7 +34,7 @@
 		$result = $_GET["result"];
 	}
 	if ($type === null or $expr === null or $result_type === null or $result === null){
-		echo json_encode({"status" => "error", "reason" => "Not All Arguments are Passed"});
+		echo json_encode(array("status" => "error", "reason" => "Not All Arguments are Passed"));
 		die;
 	}
 	//escaping
@@ -49,7 +49,7 @@
 			handle_sqare($expr, $result_type, $result)
 			break;
 		default:
-			echo json_encode({"status" => "error", "reason" => "Incorrect History Type"});
+			echo json_encode(array("status" => "error", "reason" => "Incorrect History Type"));
 			die;
 	}
 
