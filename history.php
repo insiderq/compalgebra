@@ -42,11 +42,11 @@
 	$result = mysqli::real_escape_string($result);
 	switch ($type) {
 		case "graph":
-			handle_graph($expr, $result_type, $result)
+			handle_graph($expr, $result_type, $result);
 			break;
 		
 		case "square":
-			handle_sqare($expr, $result_type, $result)
+			handle_sqare($expr, $result_type, $result);
 			break;
 		default:
 			echo json_encode(array("status" => "error", "reason" => "Incorrect History Type"));
