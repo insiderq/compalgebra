@@ -10,8 +10,15 @@ function handle(){
 		  url: "history.php",
 		  context: document.body,
 		  type: "POST",
-		  data: {expr: expr, svg: svg_code}
-		}).done(function() {});
+		  data: {expr: expr, svg: svg_code},
+		  success: function(returnValue){
+	            console.log(returnValue);
+	            return returnValue; //with return value excecute code
+            },
+          error: function(request,error) {
+	            console.log('An error occurred attempting to get new e-number');
+        	}
+		})
 
 	} catch (e) {
 		if (e.reason !== undefined){
