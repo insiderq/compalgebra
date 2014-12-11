@@ -1,4 +1,5 @@
 <?php
+	error_reporting (E_ALL);
 	$mysqli = new mysqli("localhost", "root", "pass", "compalgebra");
 	if ($mysqli->connect_errno) {
     	echo json_encode({"status" => "error", "reason" => "Unable to Connect to Database"});
@@ -41,11 +42,11 @@
 	$result = mysqli::real_escape_string($result);
 	switch ($type) {
 		case "graph":
-			
+			handle_graph($expr, $result_type, $result)
 			break;
 		
 		case "square":
-			# code...
+			handle_sqare($expr, $result_type, $result)
 			break;
 		default:
 			echo json_encode({"status" => "error", "reason" => "Incorrect History Type"});
