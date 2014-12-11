@@ -7,7 +7,7 @@ function handle(){
 		draw_d3(result_tree);
 		svg_code = (new XMLSerializer).serializeToString($("svg")[0])
 		$.ajax({
-		  url: "index.php",
+		  url: "history.php",
 		  context: document.body,
 		  type: "POST",
 		  data: {expr: expr, svg: svg_code}
