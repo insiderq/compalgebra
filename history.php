@@ -62,7 +62,7 @@
 		$dbresult =$mysqli->query("INSERT INTO `history` (`type`, `expr`, `result_type`, `result`) 
 			VALUES ('graph','".$expr."', '".$result_type."', '".$result."')");
 		var_dump($dbresult);
-		var_dump($mysqli->affected_rows);
+		var_dump($mysqli->insert_id);
 		echo json_encode(array("status" => "success"));
 	}
 	function handle_sqare($mysqli,$expr, $result_type, $result)
@@ -70,7 +70,7 @@
 		$dbresult =$mysqli->query("INSERT INTO `history` (`type`, `expr`, `result_type`, `result`)
 			VALUES ('graph','".$expr."', '".$result_type."', '".$result."')");
 		var_dump($dbresult);
-		var_dump($mysqli->affected_rows);
+		var_dump($mysqli->insert_id);
 		echo json_encode(array("status" => "success"));
 	}
 ?>
