@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Salnikov Alexander Rational Expressions</title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+	<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div class="wrapper" id="wrapper">
+		<div class="header" id="header">
+		</div>
+		<div class="body" id="body">
+			<p align="left">
+				Rational Expressions
+			</p>
+			<p>
+				Multisymbolic Operands: A, a, B, b, Aa, Bb<br>
+				Binary Operators: + - * /  and Brackets: ( ) <br>
+			</p>
+			<input type="text" size="30%" id="expression">
+			<input type="button" id="parse" value="Draw Tree" onclick="handle()">
+		</div>
+		<div class="result" id="result">
+			
+		</div>
+		<div class="footer" id="footer">
+		</div>
+	</div>
+</body>
+</html>
