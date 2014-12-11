@@ -10,7 +10,7 @@ function handle(){
 		  url: "history.php",
 		  context: document.body,
 		  type: "POST",
-		  data: {expr: expr, svg: svg_code},
+		  data: {type: "graph", expr: expr, result_status: "success" result:svg_code},
 		  success: function(returnValue){
 	            console.log(returnValue);
 	            return returnValue; //with return value excecute code
@@ -22,7 +22,20 @@ function handle(){
 
 	} catch (e) {
 		if (e.reason !== undefined){
-			$("#result")[0].innerHTML="<p>Error: "+e.reason+"</p>"	
+			$("#result")[0].innerHTML="<p>Error: "+e.reason+"</p>"
+			$.ajax({
+			  url: "history.php",
+			  context: document.body,
+			  type: "POST",
+			  data: {type: "graph", expr: expr, result_status: "error" result:e.reason},
+			  success: function(returnValue){
+		            console.log(returnValue);
+		            return returnValue; //with return value excecute code
+	            },
+	          error: function(request,error) {
+		            console.log('An error occurred attempting to get new e-number');
+        	}
+		})	
 		} else {
 			throw e;
 		}
