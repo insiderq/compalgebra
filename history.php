@@ -38,8 +38,8 @@
 		die;
 	}
 	//escaping
-	$expr = mysqli::real_escape_string($expr);
-	$result = mysqli::real_escape_string($result);
+	$expr = mysqli_real_escape_string($expr);
+	$result = mysqli_real_escape_string($result);
 	switch ($type) {
 		case "graph":
 			handle_graph($expr, $result_type, $result);
