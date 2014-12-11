@@ -40,25 +40,33 @@
 	//escaping
 	$expr = $mysqli->real_escape_string($expr);
 	$result = $mysqli->real_escape_string($result);
+	if ($result_type != "success" and $result_type != "error"){
+			echo json_encode(array("status" => "error", "reason" => "Incorrect Result Type"));
+		}
+
 	switch ($type) {
 		case "graph":
-			handle_graph($expr, $result_type, $result);
+			handle_graph($mysqli, $expr, $result_type, $result);
 			break;
 		
 		case "square":
-			handle_sqare($expr, $result_type, $result);
+			handle_sqare($mysqli, $expr, $result_type, $result);
 			break;
 		default:
 			echo json_encode(array("status" => "error", "reason" => "Incorrect History Type"));
 			die;
 	}
 
-	function handle_graph($expr, $result_type, $result)
+	function handle_graph($mysqli, $expr, $result_type, $result)
 	{
-		echo "graph";
+		echo dbresult =$mysqli->query("INSERT INTO `history`(`type`, `expr`, `result_type`, `result`) 
+			VALUES ('graph',"+$expr+","+$result_type+","+$result+","+$result+")");
+		echo json_encode(array("status" => "success"));
 	}
-	function handle_sqare($expr, $result_type, $result)
+	function handle_sqare($mysqli,$expr, $result_type, $result)
 	{
-		echo "square";
+		echo dbresult =$mysqli->query("INSERT INTO `history`(`type`, `expr`, `result_type`, `result`) 
+			VALUES ('square',"+$expr+","+$result_type+","+$result+","+$result+")");
+		echo json_encode(array("status" => "success"));
 	}
 ?>
