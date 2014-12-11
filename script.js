@@ -10,7 +10,7 @@ function handle(){
 		  url: "history.php",
 		  context: document.body,
 		  type: "POST",
-		  data: {type: "graph", expr: expr, result_status: "success", result:svg_code},
+		  data: {type: "graph", expr: expr, result_type: "success", result:svg_code},
 		  success: function(returnValue){
 	            console.log(returnValue);
             },
@@ -26,7 +26,7 @@ function handle(){
 			  url: "history.php",
 			  context: document.body,
 			  type: "POST",
-			  data: {type: "graph", expr: expr, result_status: "error", result:e.reason},
+			  data: {type: "graph", expr: expr, result_type: "error", result:e.reason},
 			  success: function(returnValue){
 		            console.log(returnValue);
 	            },
