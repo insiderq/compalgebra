@@ -7,9 +7,9 @@
 <body>
 <div class="wrapper" id="wrapper">
 	<div class="header" id="header">
-		<table>
+		<table cellspacing="5">
 			<tr>
-				<th><a href="/"> Rational Expressions </a></th>
+				<th>Menu: <a href="/">Rational Expressions</a></th>
 				<th><a href="/history_list.php"> Query History List </a></th>
 				<th><a href="/square.html"> Square Diff Formula </a></th>
 			</tr>
@@ -17,7 +17,7 @@
 	</div>
 	<div class="body" id="body">
 		<p>Query History List Paging</p>
-		<table border="1">
+		<table border="1" cellspacing="4">
 		<tr>
 		    <th>Expression</th>
 		    <th>Result Status</th>
