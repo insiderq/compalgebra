@@ -363,11 +363,11 @@ function build_tree(polish_arr) {
 
 function draw_d3(root){
 	var width = 650;
-    var height = 550;
+    var height = 850;
     var margin = 100
 
     var tree = d3.layout.tree()
-            .size([height, width-margin]);
+            .size([height-50, width-margin]);
 
     var diagonal = d3.svg.diagonal()
             .projection(function(d) { return [d.y, d.x]; });
@@ -376,7 +376,7 @@ function draw_d3(root){
             .attr("width", width)
             .attr("height", height)
             .append("g")
-            .attr("transform", "translate(30,0)");
+            .attr("transform", "translate(30,10)");
 
     var nodes = tree.nodes(root);
 	var links = tree.links(nodes);
