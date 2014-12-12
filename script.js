@@ -174,7 +174,7 @@ function build_tree(polish_arr) {
 }
 
 function draw_d3(root){
-	var width = 800;
+	var width = 650;
     var height = 550;
     var margin = 100
 
@@ -196,16 +196,23 @@ function draw_d3(root){
                     .data(links)
                     .enter().append("path")
                     .attr("class", "link")
-                    .attr("d", diagonal);
+                    .attr("d", diagonal)
+                    .style("fill","none")
+					.style("stroke","#ccc")
+					.style("stroke-width","1.5px");
 
     var node = svg.selectAll(".node")
                     .data(nodes)
                     .enter().append("g")
                     .attr("class", "node")
                     .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+                    .style("font","15px sans-serif")
 
     node.append("circle")
-                    .attr("r", 20);
+                    .attr("r", 20)
+					.style("fill","#fff")
+					.style("stroke","steelblue")
+					.style("stroke-width","1.5px");
 
     node.append("text")
             //.attr("dx", function(d) { return d.children ? -8 : 8; })
