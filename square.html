@@ -1,1 +1,41 @@
-NON IMPLEMENTED YET
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Salnikov Alexander Difference of Squares</title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+	<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div class="wrapper" id="wrapper">
+		<div class="header" id="header">
+			<table cellspacing="5">
+				<tr>
+					<th>Menu: <a href="index.html">Rational Expressions</a></th>
+					<th><a href="square.html"> Difference of Squares </a></th>
+					<th><a href="history_list.php"> Query History List </a></th>
+				</tr>
+			</table>
+		</div>
+		<div class="body" id="body">
+			<p align="left">
+				Difference of Squares
+			</p>
+			<p>
+				Multisymbolic Operands and Positive Integers: A, a, Aa, Ba, 0, 1, 10<br>
+				Binary Operators: + - * / ^ and Brackets: ( ) <br>
+			</p>
+			<input type="text" size="30%" id="expression">
+			<input type="button" id="expand" value="Expand" onclick="handle_sqare_expand()">
+			<input type="button" id="collaps" value="Collaps" onclick="handle_sqare_collaps()">
+		</div>
+		<div class="result" id="result">
+			
+		</div>
+		<div class="footer" id="footer">
+		</div>
+	</div>
+</body>
+</html>

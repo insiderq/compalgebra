@@ -40,24 +40,17 @@
 	if ($result_type != "success" and $result_type != "error"){
 			echo json_encode(array("status" => "error", "reason" => "Incorrect Result Type"));
 		}
-
-	switch ($type) {
-		case "graph":
-			handle_graph($mysqli, $expr, $result_type, $result);
-			break;
-		
-		case "square":
-			handle_sqare($mysqli, $expr, $result_type, $result);
-			break;
-		default:
-			echo json_encode(array("status" => "error", "reason" => "Incorrect History Type"));
-			die;
+	if ($type == "Parse" or $type == "Expand" or $type == "Collaps"){
+		handle($type, $mysqli, $expr, $result_type, $result)
+	} else {
+		echo json_encode(array("status" => "error", "reason" => "Incorrect History Type"));
+		die;	
 	}
 
-	function handle_graph($mysqli, $expr, $result_type, $result)
+	function handle($type, $mysqli, $expr, $result_type, $result)
 	{
 		$dbresult =$mysqli->query("INSERT INTO `history` (`type`, `expr`, `result_type`, `result`) 
-			VALUES ('graph','".$mysqli->real_escape_string($expr)."', '".$result_type."', '".$mysqli->real_escape_string($result)."')");
+			VALUES ('".$type."','".$mysqli->real_escape_string($expr)."', '".$result_type."', '".$mysqli->real_escape_string($result)."')");
 		if (!$dbresult){
 			echo json_encode(array("status" => "error", "reason" => "Database Problem"));
 			return;
@@ -67,7 +60,7 @@
 		$texfile = fopen("tex/".$id.".tex","w");
 		fwrite($texfile, "\documentclass[\noneside,\n11pt, a4paper,\nfootinclude=true,\nheadinclude=true,\ncleardoublepage=empty\n]{scrbook}\n");
 		fwrite($texfile, "\usepackage[pdftex]{graphicx}\n\pagenumbering{gobble}\n\begin{document}\n");
-		fwrite($texfile, "\center{\\textbf{\huge Expression $$".$expr."$$}}\n\n");
+		fwrite($texfile, "\center{\\textbf{\huge ".$type." Expression $$".$expr."$$}}\n\n");
 		fwrite($texfile, "\center{\\textbf{\huge Result}}\n\n");
 		switch ($result_type) {
 			case 'success':
@@ -85,14 +78,6 @@
 		fclose($texfile);
 		chdir('tex');
 		shell_exec("/usr/bin/pdflatex --interaction batchmode ".$id.".tex");
-		echo json_encode(array("status" => "success"));
-	}
-	function handle_sqare($mysqli,$expr, $result_type, $result)
-	{
-		$dbresult =$mysqli->query("INSERT INTO `history` (`type`, `expr`, `result_type`, `result`)
-			VALUES ('graph','".$expr."', '".$result_type."', '".$result."')");
-		var_dump($dbresult);
-		var_dump($mysqli->insert_id);
 		echo json_encode(array("status" => "success"));
 	}
 ?>

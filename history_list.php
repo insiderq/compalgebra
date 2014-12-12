@@ -10,15 +10,14 @@
 </head>
 <body>
 <div class="wrapper" id="wrapper">
-	<div class="header" id="header">
-		<table cellspacing="5">
-			<tr>
-				<th>Menu: <a href="/">Rational Expressions</a></th>
-				<th><a href="/history_list.php"> Query History List </a></th>
-				<th><a href="/square.html"> Square Diff Formula </a></th>
-			</tr>
-		</table>
-	</div>
+		<div class="header" id="header">
+			<table cellspacing="5">
+				<tr>
+					<th>Menu: <a href="index.html">Rational Expressions</a></th>
+					<th><a href="square.html"> Difference of Squares </a></th>
+					<th><a href="history_list.php"> Query History List </a></th>
+				</tr>
+			</table>
 	<div class="body" id="body">
 		<p>Query History List Paging</p>
 		<table border="1" cellspacing="5">

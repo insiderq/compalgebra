@@ -1,5 +1,5 @@
 
-function handle(){
+function handle_graph(){
 	var expr = $("#expression")[0].value;
 	$("#result")[0].innerHTML=""
 	try {
@@ -10,7 +10,7 @@ function handle(){
 		  url: "history.php",
 		  context: document.body,
 		  type: "POST",
-		  data: {type: "graph", expr: expr, result_type: "success", result:svg_code},
+		  data: {type: "Parse", expr: expr, result_type: "success", result:svg_code},
 		  success: function(returnValue){
 	            console.log(returnValue);
             },
@@ -26,7 +26,7 @@ function handle(){
 			  url: "history.php",
 			  context: document.body,
 			  type: "POST",
-			  data: {type: "graph", expr: expr, result_type: "error", result:e.reason},
+			  data: {type: "Parse", expr: expr, result_type: "error", result:e.reason},
 			  success: function(returnValue){
 		            console.log(returnValue);
 	            },
@@ -39,6 +39,164 @@ function handle(){
 		}
 	}
 }
+
+function handle_sqare_expand(){
+	var expr = $("#expression")[0].value;
+	$("#result")[0].innerHTML=""
+	try {
+		var expr_tree = parse_rational(expr);
+		var expanded_tree = square_expand(expr_tree);
+		if (JSON.stringify(expr_tree) == JSON.stringify(expanded_tree)){
+			throw {status: "error", reason: "Nothing to Expand Here"};
+		}
+		draw_d3(expanded_tree);
+		var svg_code = (new XMLSerializer).serializeToString($("svg")[0])
+		$.ajax({
+		  url: "history.php",
+		  context: document.body,
+		  type: "POST",
+		  data: {type: "Expand", expr: expr, result_type: "success", result:svg_code},
+		  success: function(returnValue){
+	            console.log(returnValue);
+            },
+          error: function(request,error) {
+	            console.log('An error occurred attempting to get new e-number');
+        	}
+		})
+
+	} catch (e) {
+		if (e.reason !== undefined){
+			$("#result")[0].innerHTML="<p>Error: "+e.reason+"</p>"
+			$.ajax({
+			  url: "history.php",
+			  context: document.body,
+			  type: "POST",
+			  data: {type: "Expand", expr: expr, result_type: "error", result:e.reason},
+			  success: function(returnValue){
+		            console.log(returnValue);
+	            },
+	          error: function(request,error) {
+		            console.log('An error occurred attempting to get new e-number');
+        	}
+		})	
+		} else {
+			throw e;
+		}
+	}
+}
+
+function handle_sqare_collaps(){
+	var expr = $("#expression")[0].value;
+	$("#result")[0].innerHTML=""
+	try {
+		expr_tree = parse_rational(expr);
+		collapsed_tree = square_collaps(expr_tree);
+		result_expr = tree_to_expression(collapsed_tree);
+		$("#result")[0].innerHTML="<p>Success: "+result_expr+"</p>"
+		$.ajax({
+		  url: "history.php",
+		  context: document.body,
+		  type: "POST",
+		  data: {type: "Collaps", expr: expr, result_type: "success", result:result_expr},
+		  success: function(returnValue){
+	            console.log(returnValue);
+            },
+          error: function(request,error) {
+	            console.log('An error occurred attempting to get new e-number');
+        	}
+		})
+
+	} catch (e) {
+		if (e.reason !== undefined){
+			$("#result")[0].innerHTML="<p>Error: "+e.reason+"</p>"
+			$.ajax({
+			  url: "history.php",
+			  context: document.body,
+			  type: "POST",
+			  data: {type: "Collaps", expr: expr, result_type: "error", result:e.reason},
+			  success: function(returnValue){
+		            console.log(returnValue);
+	            },
+	          error: function(request,error) {
+		            console.log('An error occurred attempting to get new e-number');
+        	}
+		})	
+		} else {
+			throw e;
+		}
+	}
+}
+
+function square_expand(node){
+	var first = node.children[0];
+	var second = node.children[1];
+	var name = node.name;
+	if (first === undefined && second === undefined){
+		return node;
+	}
+	if (first === undefined || second === undefined){
+		throw {status: "error", reason: "Tree is not Binary"};
+	}
+	var first_first = first.children[0];
+	var first_second = first.children[1];
+	var second_first = second.children[0];
+	var second_second = second.children[1];
+
+	if (first_first === undefined || first_second === undefined || 
+		second_first === undefined || second_second === undefined){
+		return node;
+	}
+
+	if (name == "-" && first.name == "^" && second.name == "^"){
+		if (is_number(first_second.name) && is_number(second_second.name)){
+			if (parseInt(first_second.name)%2==0 && parseInt(second_second.name)%2==0){
+				name = "*";
+				first.name = "-";
+				second.name = "+";
+				var new_first_first
+				var new_second_first
+				var new_first_second
+				var new_second_second
+				if (first_second.name == "0"){
+					new_first_first = {name: "1", children: []};
+					new_second_first = {name: "1", children: []};
+				} else if (first_second.name == "2"){
+					new_first_first = first_first;
+					new_second_first = obj_clone(new_first_first);
+				} else {
+					new_first_first = {
+						name: "^", 
+						children: [first_first, {name: parseInt(first_second.name)/2, children:[]}]
+					}
+					new_second_first = obj_clone(new_first_first)
+				}
+				if (second_second.name == "0"){
+					new_first_second = {name: "1", children: []};
+					new_second_second = {name: "1", children: []};
+				} else if (second_second.name == "2"){
+					new_first_second = second_first;
+					new_second_second = obj_clone(new_first_second);
+				} else {
+					new_first_second = {
+						name: "^", 
+						children: [second_first, {name: parseInt(second_second.name)/2, children:[]}]
+					}
+					new_second_second = obj_clone(new_first_second)
+				}
+				first.children = [new_first_first, new_first_second];
+				second.children = [new_second_first, new_second_second];
+			}
+		}
+	}
+	var expanded_first = square_expand(first);
+	var expanded_second = square_expand(second);
+	return {name: name, children:[expanded_first, expanded_second]}
+}
+
+function square_collaps(tree){
+
+}
+
 function parse_rational(expr) {
 	lexem_arr = lexify(expr);
 	if (!lexem_arr.length) {
@@ -251,4 +409,8 @@ function draw_d3(root){
             .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
             .text(function(d) { return d.name; });
     d3.select(self.frameElement).style("height", height + "px");
+}
+
+function obj_clone(obj1){
+	return JSON.parse( JSON.stringify( obj1 ) );
 }
