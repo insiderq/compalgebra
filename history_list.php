@@ -40,7 +40,7 @@
         switch ($type) {
         	case 'graph':
         		if ($result_type == "success"){
-        			echo "<tr><td>$id</td><td>$expr</td><td>Success</td><td><a>link 1</a></td><td><a>link 2</a></td></tr>";
+        			echo "<tr><td>$id</td><td>$expr</td><td>Success</td><td><a href=\"/tex/".$id.".tex\">Tex File</a></td><td><a href=\"/tex/".$id.".pdf\">PDF File</a></td></tr>";
         		} else {
         			echo "<tr><td>$id</td><td>$expr</td><td>Success</td><td colspan=\"2\">Error: $result</td></tr>";
         		}
@@ -62,4 +62,4 @@
 echo "<a href=\"/history_list.php?p=".(string)($p+1)."\">Next Page</a>";
 ?>
 </body>
-</html>>
+</html>
