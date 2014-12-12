@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8">
 	<title>Expressions Query History</title>
 </head>
 <body>
-<table>
+<table border="1">
 <tr>
     <th>Query ID</th>
     <th>Expression</th>
@@ -57,5 +58,8 @@
     } 
 ?>
 </table>
+<?php
+echo "<a href=\"/history_list.php?p=".$p+1."\">Next Page</a>";
+?>
 </body>
 </html>>
