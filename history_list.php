@@ -22,6 +22,7 @@
 		<p>Query History List Paging</p>
 		<table border="1" cellspacing="5">
 			<tr>
+				<th class="history_td">Task</th>
 			    <th class="history_td">Expression</th>
 			    <th class="history_td">Result Status</th>
 			    <th class="history_td" colspan="2">Result</th>
@@ -51,37 +52,26 @@
 					$expr = $row['expr'];
 					$result_type = $row['result_type'];
 					$result = $row['result'];
-			        switch ($type) {
-			        	case 'graph':
-			        		if ($result_type == "success"){
-			        			echo "
-			        			<tr class=\"history_success_tr\">
-			        			<td class=\"history_td\">$expr</td>
-			        			<td class=\"history_td\">Success</td>
-			        			<td class=\"history_td\"><a href=\"/tex/".$id.".tex\">Tex File</a></td>
-			        			<td class=\"history_td\"><a href=\"/tex/".$id.".pdf\">PDF File</a></td>
-			        			</tr>
-			        			";
-			        		} else {
-			        			echo "
-			        			<tr class=\"history_error_tr\">
-			        			<td class=\"history_td\">$expr</td>
-			        			<td class=\"history_td\">Error</td>
-			        			<td class=\"history_td\" colspan=\"2\">Error: $result</td>
-			        			</tr>
-			        			";
-			        		}
-			        		break;
-			        	
-			        	case 'square':
-			        		# code...
-			        		break;
-			        	
-
-			        	default:
-			        		# code...
-			        		break;
-			        }
+	        		if ($result_type == "success"){
+	        			echo "
+	        			<tr class=\"history_success_tr\">
+	        			<td class=\"history_td\">$type</td>
+	        			<td class=\"history_td\">$expr</td>
+	        			<td class=\"history_td\">Success</td>
+	        			<td class=\"history_td\"><a href=\"/tex/".$id.".tex\">Tex File</a></td>
+	        			<td class=\"history_td\"><a href=\"/tex/".$id.".pdf\">PDF File</a></td>
+	        			</tr>
+	        			";
+	        		} else {
+	        			echo "
+	        			<tr class=\"history_error_tr\">
+	        			<td class=\"history_td\">$type</td>
+	        			<td class=\"history_td\">$expr</td>
+	        			<td class=\"history_td\">Error</td>
+	        			<td class=\"history_td\" colspan=\"2\">Error: $result</td>
+	        			</tr>
+	        			";
+	        		}
 			    } 
 			?>
 		</table>

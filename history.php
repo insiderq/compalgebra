@@ -41,7 +41,7 @@
 			echo json_encode(array("status" => "error", "reason" => "Incorrect Result Type"));
 		}
 	if ($type == "Parse" or $type == "Expand" or $type == "Collaps"){
-		handle($type, $mysqli, $expr, $result_type, $result)
+		handle($type, $mysqli, $expr, $result_type, $result);
 	} else {
 		echo json_encode(array("status" => "error", "reason" => "Incorrect History Type"));
 		die;	
