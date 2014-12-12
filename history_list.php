@@ -58,8 +58,8 @@
 	        			<td class=\"history_td\">$type</td>
 	        			<td class=\"history_td\">$expr</td>
 	        			<td class=\"history_td\">Success</td>
-	        			<td class=\"history_td\"><a href=\"/tex/".$id.".tex\">Tex File</a></td>
-	        			<td class=\"history_td\"><a href=\"/tex/".$id.".pdf\">PDF File</a></td>
+	        			<td class=\"history_td\"><a href=\"/tex/".$id.".tex\" target=\"_blank\">Tex File</a></td>
+	        			<td class=\"history_td\"><a href=\"/tex/".$id.".pdf\" target=\"_blank\">PDF File</a></td>
 	        			</tr>
 	        			";
 	        		} else {
