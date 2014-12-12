@@ -7,11 +7,16 @@
 <body>
 <div class="wrapper" id="wrapper">
 	<div class="header" id="header">
-	<a href="/"> Rational Expressions </a>
-	<a href="/history_list.php"> Query History List </a>
-	<a href="/square.html"> Square Diff Formula </a>
+		<table>
+			<tr>
+				<th><a href="/"> Rational Expressions </a></th>
+				<th><a href="/history_list.php"> Query History List </a></th>
+				<th><a href="/square.html"> Square Diff Formula </a></th>
+			</tr>
+		</table>
 	</div>
 	<div class="body" id="body">
+		<p>Query History List Paging</p>
 		<table border="1">
 		<tr>
 		    <th>Expression</th>
