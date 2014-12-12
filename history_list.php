@@ -86,9 +86,11 @@
 			    } 
 			?>
 		</table>
-		<?php
-		echo "<a href=\"/history_list.php?p=".(string)($p+1)."\">Next Page</a>";
-		?>
+		<p>
+			<?php
+			echo "<a href=\"/history_list.php?p=".(string)($p+1)."\">Next Page</a>";
+			?>
+		</p>
 	</div>
 	<div class="footer" id="footer">
 

@@ -4,8 +4,8 @@
 }
 
 .history_success_tr {
-    background-color: "#98FB98";
+    background: "#98FB98";
 }
 .history_error_tr {
-    background-color: "#F08080";
+    background: "#F08080";
 }
