@@ -75,7 +75,7 @@
 				fwrite($file, $result);
 				fclose($file);
 				shell_exec("inkscape --export-pdf=tex/".$id."_svg.pdf --file=tex/".$id.".svg");
-				fwrite($texfile, "\center{\includegraphics[scale=0.75]{".$id."_svg.pdf}}}\n\n");
+				fwrite($texfile, "\center{\includegraphics[scale=0.75]{".$id."_svg.pdf}}\n\n");
 				break;
 			case 'error':
 				fwrite($texfile, "\center{\huge Error: ".$result."}\n\n");
