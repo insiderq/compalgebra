@@ -363,7 +363,7 @@ function build_tree(polish_arr) {
 
 function draw_d3(root){
 	var width = 650;
-    var height = 850;
+    var height = 800;
     var margin = 100
 
     var tree = d3.layout.tree()
