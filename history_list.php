@@ -2,6 +2,10 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+	<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+	<link rel="stylesheet" href="style.css">
 	<title>Expressions Query History</title>
 </head>
 <body>
