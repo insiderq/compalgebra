@@ -17,7 +17,7 @@
 	</div>
 	<div class="body" id="body">
 		<p>Query History List Paging</p>
-		<table border="1" cellspacing="4">
+		<table border="1" cellspacing="5">
 		<tr>
 		    <th>Expression</th>
 		    <th>Result Status</th>
@@ -69,11 +69,9 @@
 		    } 
 		?>
 		</table>
-		<center>
 		<?php
 		echo "<a href=\"/history_list.php?p=".(string)($p+1)."\">Next Page</a>";
 		?>
-		</center>
 	</div>
 	<div class="footer" id="footer">
 
