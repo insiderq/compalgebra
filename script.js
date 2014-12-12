@@ -106,13 +106,19 @@ function translate_polish(lexemes) {
 }
 
 function is_operand(lexem){return RegExp("^[A-Za-z]$").test(lexem)}
-function is_operator(lexem){return RegExp("^[\+|\-|\*|\/|\(|\)]$").test(lexem)}
+function is_operator(lexem){return RegExp("^[-|\+|\*|\/|\(|\)|\^]$").test(lexem)}
+function is_digit(lexem){return RegExp("^[0-9]$").test(lexem)}
+function is_number(lexem){return RegExp("^[0-9]+$").test(lexem)}
 
 function lexify(expr){
 	var result = new Array();
 	var temp = "";
 	for (var i = 0; i<expr.length; i++){
 		if (is_operand(expr[i])) {
+			if (is_number(temp)){
+				result.push({type:"operand", value: temp});
+				temp = "";
+			}
 			temp+=expr[i];
 		} else if(is_operator(expr[i])) {
 			if (temp.length){
@@ -132,6 +138,9 @@ function lexify(expr){
 				case "/":
 					result.push({type: "operator", prior:2, value: expr[i]});
 				break
+				case "^":
+					result.push({type: "operator", prior:3, value: expr[i]});
+				break
 				case "(":
 					result.push({type: "left_bracket", value: expr[i]});
 				break
@@ -139,6 +148,27 @@ function lexify(expr){
 					result.push({type: "right_bracket", value: expr[i]});
 				break
 			}
+		} else if (is_digit(expr[i])) {
+			if (temp.length == 0){
+				if (expr[i]==0){
+					// zero cant be a first symbol in a nimber
+					result.push({type:"operand", value: expr[i]});
+				} else {
+					temp+=expr[i];
+				}
+			} else if (is_number(temp)) {
+				temp+=expr[i];
+			} else { //temp is a variable
+				result.push({type:"operand", value: temp});
+				temp = "";
+				if (expr[i]==0){
+					// zero cant be a first symbol in a nimber
+					result.push({type:"operand", value: expr[i]});
+				} else {
+					temp+=expr[i];
+				}
+			}
+			
 		} else {
 			throw {status: "error", reason: "Unallowed Symbol Found: "+expr[i]};
 		}
