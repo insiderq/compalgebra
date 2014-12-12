@@ -15,6 +15,8 @@
 	}
 	$p = (int)$p;
 	$offset = ($p-1)*$limit;
-	$rows = $mysqli->query("SELECT * FROM `history` ORDER BY `id` DESC LIMIT '".$limit."' OFFSET '".$offset."';");
+	$q = "SELECT * FROM `history` ORDER BY `id` DESC LIMIT '".$limit."' OFFSET '".$offset."';";
+	var_dump($q);
+	$rows = $mysqli->query($q);
 	var_dump($rows);
 ?>
