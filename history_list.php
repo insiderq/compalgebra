@@ -13,7 +13,7 @@
 	if (isset($_POST['p'])) {
 		$p = $_POST['p'];
 	}
-	$p = (int)p;
+	$p = (int)$p;
 	$offset = ($p-1)*$limit;
 	$rows = $mysqli->query("SELECT * FROM `history` ORDER BY `id` DESC LIMIT '".$limit."' OFFSET '".$offset."';");
 	var_dump($rows);
