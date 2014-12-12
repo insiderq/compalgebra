@@ -23,9 +23,9 @@
 		<p>Query History List Paging</p>
 		<table border="1" cellspacing="5">
 			<tr>
-			    <th>Expression</th>
-			    <th>Result Status</th>
-			    <th colspan="2">Result</th>
+			    <th class="history_td">Expression</th>
+			    <th class="history_td">Result Status</th>
+			    <th class="history_td" colspan="2">Result</th>
 			</tr>
 			<?php
 				error_reporting (E_ALL);
