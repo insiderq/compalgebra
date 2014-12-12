@@ -81,7 +81,7 @@
 				fwrite($texfile, "\center{\huge Error: ".$result."}\n\n");
 				break;
 		}
-		fwrite($texfile, "\end{document}\n\n");
+		fwrite($texfile, "\\end{document}\n\n");
 		fclose($texfile);
 		shell_exec("/usr/bin/pdflatex --interaction batchmode tex/".$id.".tex");
 		echo json_encode(array("status" => "success"));
