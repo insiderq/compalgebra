@@ -59,7 +59,7 @@
 ?>
 </table>
 <?php
-echo "<a href=\"/history_list.php?p=".(str)($p+1)."\">Next Page</a>";
+echo "<a href=\"/history_list.php?p=".(string)($p+1)."\">Next Page</a>";
 ?>
 </body>
 </html>>
