@@ -83,7 +83,8 @@
 		}
 		fwrite($texfile, "\\end{document}\n\n");
 		fclose($texfile);
-		shell_exec("/usr/bin/pdflatex --interaction batchmode tex/".$id.".tex");
+		chdir('tex');
+		shell_exec("/usr/bin/pdflatex --interaction batchmode ".$id.".tex");
 		echo json_encode(array("status" => "success"));
 	}
 	function handle_sqare($mysqli,$expr, $result_type, $result)
