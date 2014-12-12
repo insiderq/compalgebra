@@ -67,17 +67,17 @@
 		}
 		$id = $mysqli->insert_id;
 
-		$texfile = fopen("tex/".$id."tex","w");
+		$texfile = fopen("tex/".$id.".tex","w");
 		fwrite($texfile, "\documentclass[\noneside,\n11pt, a4paper,\nfootinclude=true,\nheadinclude=true,\ncleardoublepage=empty\n]{scrbook}");
 		fwrite($texfile, "\usepackage[pdftex]{graphicx}\n\begin{document}");
 		fwrite($texfile, "\center{\\textbf{\huge Expression $$".$expr."$$}}");
 		fwrite($texfile, "\center{\\textbf{\huge Result}}");
 		switch ($result_type) {
 			case 'success':
-				$file = fopen("tex/".$id."svg","w");
+				$file = fopen("tex/".$id.".svg","w");
 				fwrite($file, $result);
 				fclose($file);
-				shell_exec("inkscape --export-pdf=tex/".$id."_svg.pdf --file=tex/".$id."svg");
+				shell_exec("inkscape --export-pdf=tex/".$id."_svg.pdf --file=tex/".$id.".svg");
 				fwrite($texfile, "\center{\includegraphics[scale=0.75]{".$id."_svg.pdf}}}");
 				break;
 			case 'error':
