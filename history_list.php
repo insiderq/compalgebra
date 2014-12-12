@@ -55,18 +55,22 @@
 			        switch ($type) {
 			        	case 'graph':
 			        		if ($result_type == "success"){
-			        			echo "<tr class=\"history_success_tr\">
+			        			echo "
+			        			<tr class=\"history_success_tr\">
 			        			<td class=\"history_td\">$expr</td>
 			        			<td class=\"history_td\">Success</td>
 			        			<td class=\"history_td\"><a href=\"/tex/".$id.".tex\">Tex File</a></td>
 			        			<td class=\"history_td\"><a href=\"/tex/".$id.".pdf\">PDF File</a></td>
-			        			</tr>";
+			        			</tr>
+			        			";
 			        		} else {
-			        			echo "<tr class=\"history_error_tr\">
+			        			echo "
+			        			<tr class=\"history_error_tr\">
 			        			<td class=\"history_td\">$expr</td>
 			        			<td class=\"history_td\">Error</td>
 			        			<td class=\"history_td\" colspan=\"2\">Error: $result</td>
-			        			</tr>";
+			        			</tr>
+			        			";
 			        		}
 			        		break;
 			        	
