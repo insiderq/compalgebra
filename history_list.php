@@ -21,7 +21,7 @@
 	</div>
 	<div class="body" id="body">
 		<p>Query History List Paging</p>
-		<table border="1" cellspacing="5">
+		<table id="history_table" border="1" cellspacing="5">
 		<tr>
 		    <th>Expression</th>
 		    <th>Result Status</th>
