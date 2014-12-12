@@ -72,7 +72,7 @@
 		fwrite($texfile, "\usepackage[pdftex]{graphicx}\n\begin{document}");
 		fwrite($texfile, "\center{\\textbf{\huge Expression $$".$expr."$$}}");
 		fwrite($texfile, "\center{\\textbf{\huge Result}}");
-		switch ($res) {
+		switch ($result_type) {
 			case 'success':
 				$file = fopen("tex/".$id."svg","w");
 				fwrite($file, $result);
