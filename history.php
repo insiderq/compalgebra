@@ -49,6 +49,7 @@
 
 	function handle($type, $mysqli, $expr, $result_type, $result)
 	{
+		//save to DB
 		$dbresult =$mysqli->query("INSERT INTO `history` (`type`, `expr`, `result_type`, `result`) 
 			VALUES ('".$type."','".$mysqli->real_escape_string($expr)."', '".$result_type."', '".$mysqli->real_escape_string($result)."')");
 		if (!$dbresult){
@@ -57,26 +58,34 @@
 		}
 		$id = $mysqli->insert_id;
 
+		//Generate .tex file
 		$texfile = fopen("tex/".$id.".tex","w");
 		fwrite($texfile, "\documentclass[\noneside,\n11pt, a4paper,\nfootinclude=true,\nheadinclude=true,\ncleardoublepage=empty\n]{scrbook}\n");
 		fwrite($texfile, "\usepackage[pdftex]{graphicx}\n\pagenumbering{gobble}\n\begin{document}\n");
 		fwrite($texfile, "\center{\\textbf{\huge ".$type." Expression $$".$expr."$$}}\n\n");
 		fwrite($texfile, "\center{\\textbf{\huge Result}}\n\n");
+
 		switch ($result_type) {
+			// On success insert SVG 
 			case 'success':
 				$file = fopen("tex/".$id.".svg","w");
 				fwrite($file, $result);
 				fclose($file);
+				//convert svg to pdf with inkscape
 				shell_exec("inkscape --export-pdf=tex/".$id."_svg.pdf --file=tex/".$id.".svg");
+				//insert pdf
 				fwrite($texfile, "\center{\includegraphics[scale=0.75]{".$id."_svg.pdf}}\n\n");
 				break;
+			// On error insert Error Text
 			case 'error':
 				fwrite($texfile, "\center{\huge Error: ".$result."}\n\n");
 				break;
 		}
+
 		fwrite($texfile, "\\end{document}\n\n");
 		fclose($texfile);
 		chdir('tex');
+		// compile .tex to pdf
 		shell_exec("/usr/bin/pdflatex --interaction batchmode ".$id.".tex");
 		echo json_encode(array("status" => "success"));
 	}

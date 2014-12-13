@@ -34,7 +34,8 @@
 			    	echo json_encode(array("status" => "error", "reason" => "Unable to Connect to Database"));
 			    	die;
 				}
-				$p = 1;
+
+				$p = 1; //page default
 				$limit = 100;
 				if (isset($_GET['p'])) {
 					$p = $_GET['p'];
@@ -43,15 +44,19 @@
 					$p = $_POST['p'];
 				}
 				$p = (int)$p;
+
 				$offset = ($p-1)*$limit;
+				// get history entries
 				$q = "SELECT * FROM `history` ORDER BY `id` DESC LIMIT ".$offset.",".$limit.";";
 				$rows = $mysqli->query($q);
+				//generate table
 				while( $row = mysqli_fetch_assoc($rows) ){
 					$id = $row['id'];
 					$type = $row['type'];
 					$expr = $row['expr'];
 					$result_type = $row['result_type'];
 					$result = $row['result'];
+					// On success place links to .pdf and .tex files
 	        		if ($result_type == "success"){
 	        			echo "
 	        			<tr class=\"history_success_tr\">
@@ -62,6 +67,7 @@
 	        			<td class=\"history_td\"><a href=\"/tex/".$id.".pdf\" target=\"_blank\">PDF File</a></td>
 	        			</tr>
 	        			";
+        			// On error place Error Text
 	        		} else {
 	        			echo "
 	        			<tr class=\"history_error_tr\">
@@ -77,6 +83,7 @@
 		</table>
 		<p>
 			<?php
+			// Add link to the Next Page
 			echo "<a href=\"/history_list.php?p=".(string)($p+1)."\">Next Page</a>";
 			?>
 		</p>
