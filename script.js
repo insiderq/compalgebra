@@ -18,7 +18,7 @@ function handle_parse(){
 	}
 }
 
-function handle_sqare_expand(){
+function handle_square_expand(){
 	var expr = $("#expression")[0].value;
 	$("#result")[0].innerHTML=""
 	try {
@@ -40,7 +40,7 @@ function handle_sqare_expand(){
 	}
 }
 
-function handle_sqare_collaps(){
+function handle_square_collaps(){
 	var expr = $("#expression")[0].value;
 	$("#result")[0].innerHTML=""
 	try {
@@ -80,15 +80,17 @@ function square_expand(node){
 
 	if (first_first === undefined || first_second === undefined || 
 		second_first === undefined || second_second === undefined){
-		return node;
+
+		var expanded_first = square_expand(first);
+		var expanded_second = square_expand(second);
+		return {name: name, children:[expanded_first, expanded_second]}
 	}
 
 	if (name == "-" && first.name == "^" && second.name == "^"){
 		if (is_number(first_second.name) && is_number(second_second.name)){
 			if (parseInt(first_second.name)%2==0 && parseInt(second_second.name)%2==0){
 				name = "*";
-				first.name = "-";
-				second.name = "+";
+
 				var new_first_first
 				var new_second_first
 				var new_first_second
@@ -119,8 +121,8 @@ function square_expand(node){
 					}
 					new_second_second = node_clone(new_first_second)
 				}
-				first.children = [new_first_first, new_first_second];
-				second.children = [new_second_first, new_second_second];
+				first = {name: "-", children: [new_first_first, new_first_second]};
+				second = {name: "+", children: [new_second_first, new_second_second]};
 			}
 		}
 	}
@@ -147,7 +149,10 @@ function square_collaps(node){
 
 	if (first_first === undefined || first_second === undefined || 
 		second_first === undefined || second_second === undefined){
-		return node;
+		
+		var first_collapsed = square_collaps(first);
+		var second_collapsed = square_collaps(second);
+		return {name: node.name, children:[first_collapsed, second_collapsed]};
 	}
 
 	// ensure child nodes are already collapsed
