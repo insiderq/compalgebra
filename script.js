@@ -62,6 +62,7 @@ function handle_sqare_collaps(){
 	}
 }
 
+//recursive square difference expanding
 function square_expand(node){
 	var first = node.children[0];
 	var second = node.children[1];
@@ -127,9 +128,26 @@ function square_expand(node){
 	var expanded_second = square_expand(second);
 	return {name: name, children:[expanded_first, expanded_second]}
 }
+//recursive square difference collapsing
+function square_collaps(node){
+	var first = node.children[0];
+	var second = node.children[1];
+	var name = node.name;
+	if (first === undefined && second === undefined){
+		return node;
+	}
+	if (first === undefined || second === undefined){
+		throw {status: "error", reason: "Tree is not Binary"};
+	}
+	var first_first = first.children[0];
+	var first_second = first.children[1];
+	var second_first = second.children[0];
+	var second_second = second.children[1];
 
-function square_collaps(tree){
-
+	if (first_first === undefined || first_second === undefined || 
+		second_first === undefined || second_second === undefined){
+		return node;
+	}
 }
 
 function expression_tree(expr) {
@@ -346,11 +364,11 @@ function print_svg_tree(root){
     d3.select(self.frameElement).style("height", height + "px");
 }
 
-function node_clone(obj1){
-	return JSON.parse( JSON.stringify( obj1 ) );
+function node_clone(node1){
+	return JSON.parse( JSON.stringify( node1 ) );
 }
-function node_is_equal(obj1, obj2){
-	return JSON.stringify(obj1)==JSON.stringify(obj2);
+function node_is_equal(node1, node2){
+	return JSON.stringify(node1)==JSON.stringify(node2);
 }
 
 function send_history(type, expr, result_type, result){

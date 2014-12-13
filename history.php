@@ -62,7 +62,7 @@
 		$texfile = fopen("tex/".$id.".tex","w");
 		fwrite($texfile, "\documentclass[\noneside,\n11pt, a4paper,\nfootinclude=true,\nheadinclude=true,\ncleardoublepage=empty\n]{scrbook}\n");
 		fwrite($texfile, "\usepackage[pdftex]{graphicx}\n\pagenumbering{gobble}\n\begin{document}\n");
-		fwrite($texfile, "\center{\\textbf{\huge ".$type." Expression $$".$expr."$$}}\n\n");
+		fwrite($texfile, "\center{\\textbf{\huge ".$type." Expression $$".str_replace("^","\^",$expr)."$$}}\n\n");
 		fwrite($texfile, "\center{\\textbf{\huge Result}}\n\n");
 
 		switch ($result_type) {
