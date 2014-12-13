@@ -130,9 +130,10 @@ function square_expand(node){
 }
 //recursive square difference collapsing
 function square_collaps(node){
+	// recursion exit conditions
+	// ensure this node has at least two levels of depth
 	var first = node.children[0];
 	var second = node.children[1];
-	var name = node.name;
 	if (first === undefined && second === undefined){
 		return node;
 	}
@@ -148,6 +149,85 @@ function square_collaps(node){
 		second_first === undefined || second_second === undefined){
 		return node;
 	}
+
+	// ensure child nodes are already collapsed
+	var first_collapsed = square_collaps(first);
+	var second_collapsed = square_collaps(second);
+
+	//collaps current node
+	//check formula operators 
+	if (node.name != "*"){
+		return {name:node.name, children:[first_collapsed,second_collapsed]};
+	}
+	if (first_collapsed.name=="-" && second_collapsed.name=="+"){
+		var minus = first_collapsed;
+		var plus = second_collapsed;
+	} else if (first_collapsed.name=="+" && second_collapsed.name=="-"){
+		var minus = second_collapsed;
+		var plus = first_collapsed;
+	} else {
+		return {name:node.name, children:[first_collapsed,second_collapsed]};
+	}
+	var minus_first = minus.children[0];
+	var minus_second = minus.children[1];
+	var plus_first = plus.children[0];
+	var plus_second = plus.children[1];
+
+	// check formula operands
+	if ((node_is_equal(minus_first, plus_first) && node_is_equal(minus_second, plus_second))
+		||(node_is_equal(minus_first, plus_second) && node_is_equal(minus_second, plus_first))){
+		//collapsing itself
+
+		//double existing pow
+		if (minus_first.name=="^"){
+			if (is_number(minus_first.children[1].name)){
+				var new_first = {
+					name:"^", 
+					children: [
+						minus_first.children[0],
+						{name: parseInt(minus_first.children[1].name)*2, children: []}
+						]
+					};
+			} else {
+				var new_first = {
+					name:"^", 
+					children:[minus_first, {name:"2",children:[]} ]
+				};
+			}
+		} else {
+			var new_first = {
+				name:"^", 
+				children:[minus_first, {name:"2",children:[]} ]
+			};
+		}
+		if (minus_second.name=="^"){
+			if (is_number(minus_second.children[1].name)){
+				var new_second = {
+					name:"^", 
+					children: [
+						minus_second.children[0],
+						{name: parseInt(minus_second.children[1].name)*2, children: []}
+						]
+					};
+			} else {
+				var new_second = {
+					name:"^", 
+					children:[minus_second, {name:"2",children:[]} ]
+				};
+			}
+		} else {
+			var new_second = {
+				name:"^", 
+				children:[minus_second, {name:"2",children:[]} ]
+			};
+		}
+		return {name:"-", children:[new_first, new_second]};
+
+	} else {
+		return {name:node.name, children:[first_collapsed,second_collapsed]};
+	}
+
+	
 }
 
 function expression_tree(expr) {
