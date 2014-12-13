@@ -102,7 +102,7 @@ function square_expand(node){
 				} else {
 					new_first_first = {
 						name: "^", 
-						children: [first_first, {name: parseInt(first_second.name)/2, children:[]}]
+						children: [first_first, {name: (parseInt(first_second.name)/2).toString(), children:[]}]
 					}
 					new_second_first = node_clone(new_first_first)
 				}
@@ -115,7 +115,7 @@ function square_expand(node){
 				} else {
 					new_first_second = {
 						name: "^", 
-						children: [second_first, {name: parseInt(second_second.name)/2, children:[]}]
+						children: [second_first, {name: (parseInt(second_second.name)/2).toString(), children:[]}]
 					}
 					new_second_second = node_clone(new_first_second)
 				}
@@ -185,7 +185,7 @@ function square_collaps(node){
 					name:"^", 
 					children: [
 						minus_first.children[0],
-						{name: parseInt(minus_first.children[1].name)*2, children: []}
+						{name: (parseInt(minus_first.children[1].name)*2).toString(), children: []}
 						]
 					};
 			} else {
@@ -206,7 +206,7 @@ function square_collaps(node){
 					name:"^", 
 					children: [
 						minus_second.children[0],
-						{name: parseInt(minus_second.children[1].name)*2, children: []}
+						{name: (parseInt(minus_second.children[1].name)*2).toString(), children: []}
 						]
 					};
 			} else {
