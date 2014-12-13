@@ -1,39 +1,17 @@
 
-function handle_graph(){
+function handle_parse(){
 	var expr = $("#expression")[0].value;
 	$("#result")[0].innerHTML=""
 	try {
-		result_tree = parse_rational(expr);
-		draw_d3(result_tree);
+		result_tree = expression_tree(expr);
+		print_svg_tree(result_tree);
 		svg_code = (new XMLSerializer).serializeToString($("svg")[0])
-		$.ajax({
-		  url: "history.php",
-		  context: document.body,
-		  type: "POST",
-		  data: {type: "Parse", expr: expr, result_type: "success", result:svg_code},
-		  success: function(returnValue){
-	            console.log(returnValue);
-            },
-          error: function(request,error) {
-	            console.log('An error occurred attempting to get new e-number');
-        	}
-		})
+		send_history("Parse", expr, "success", svg_code);
 
 	} catch (e) {
 		if (e.reason !== undefined){
 			$("#result")[0].innerHTML="<p>Error: "+e.reason+"</p>"
-			$.ajax({
-			  url: "history.php",
-			  context: document.body,
-			  type: "POST",
-			  data: {type: "Parse", expr: expr, result_type: "error", result:e.reason},
-			  success: function(returnValue){
-		            console.log(returnValue);
-	            },
-	          error: function(request,error) {
-		            console.log('An error occurred attempting to get new e-number');
-        	}
-		})	
+			send_history("Parse", expr, "error", e.reason);
 		} else {
 			throw e;
 		}
@@ -44,41 +22,18 @@ function handle_sqare_expand(){
 	var expr = $("#expression")[0].value;
 	$("#result")[0].innerHTML=""
 	try {
-		var expr_tree = parse_rational(expr);
+		var expr_tree = expression_tree(expr);
 		var expanded_tree = square_expand(expr_tree);
-		if (JSON.stringify(expr_tree) == JSON.stringify(expanded_tree)){
+		if (node_is_equal(expr_tree, expanded_tree)){
 			throw {status: "error", reason: "Nothing to Expand Here"};
 		}
-		draw_d3(expanded_tree);
-		var svg_code = (new XMLSerializer).serializeToString($("svg")[0])
-		$.ajax({
-		  url: "history.php",
-		  context: document.body,
-		  type: "POST",
-		  data: {type: "Expand", expr: expr, result_type: "success", result:svg_code},
-		  success: function(returnValue){
-	            console.log(returnValue);
-            },
-          error: function(request,error) {
-	            console.log('An error occurred attempting to get new e-number');
-        	}
-		})
-
+		print_svg_tree(expanded_tree);
+		var svg_code = (new XMLSerializer).serializeToString($("svg")[0]);
+		send_history("Expand", expr, "success", svg_code);
 	} catch (e) {
 		if (e.reason !== undefined){
 			$("#result")[0].innerHTML="<p>Error: "+e.reason+"</p>"
-			$.ajax({
-			  url: "history.php",
-			  context: document.body,
-			  type: "POST",
-			  data: {type: "Expand", expr: expr, result_type: "error", result:e.reason},
-			  success: function(returnValue){
-		            console.log(returnValue);
-	            },
-	          error: function(request,error) {
-		            console.log('An error occurred attempting to get new e-number');
-        	}
-		})	
+			send_history("Expand", expr, "error", e.reason);
 		} else {
 			throw e;
 		}
@@ -89,38 +44,18 @@ function handle_sqare_collaps(){
 	var expr = $("#expression")[0].value;
 	$("#result")[0].innerHTML=""
 	try {
-		expr_tree = parse_rational(expr);
-		collapsed_tree = square_collaps(expr_tree);
-		result_expr = tree_to_expression(collapsed_tree);
-		$("#result")[0].innerHTML="<p>Success: "+result_expr+"</p>"
-		$.ajax({
-		  url: "history.php",
-		  context: document.body,
-		  type: "POST",
-		  data: {type: "Collaps", expr: expr, result_type: "success", result:result_expr},
-		  success: function(returnValue){
-	            console.log(returnValue);
-            },
-          error: function(request,error) {
-	            console.log('An error occurred attempting to get new e-number');
-        	}
-		})
-
+		var expr_tree = expression_tree(expr);
+		var collapsed_tree = square_collaps(expr_tree);
+		if (node_is_equal(expr_tree, collapsed_tree)){
+			throw {status: "error", reason: "Nothing to Collaps Here"};
+		}
+		print_svg_tree(collapsed_tree);
+		var svg_code = (new XMLSerializer).serializeToString($("svg")[0]);
+		send_history("Collaps", expr, "success", svg_code);
 	} catch (e) {
 		if (e.reason !== undefined){
 			$("#result")[0].innerHTML="<p>Error: "+e.reason+"</p>"
-			$.ajax({
-			  url: "history.php",
-			  context: document.body,
-			  type: "POST",
-			  data: {type: "Collaps", expr: expr, result_type: "error", result:e.reason},
-			  success: function(returnValue){
-		            console.log(returnValue);
-	            },
-	          error: function(request,error) {
-		            console.log('An error occurred attempting to get new e-number');
-        	}
-		})	
+			send_history("Collaps", expr, "error", e.reason);
 		} else {
 			throw e;
 		}
@@ -162,26 +97,26 @@ function square_expand(node){
 					new_second_first = {name: "1", children: []};
 				} else if (first_second.name == "2"){
 					new_first_first = first_first;
-					new_second_first = obj_clone(new_first_first);
+					new_second_first = node_clone(new_first_first);
 				} else {
 					new_first_first = {
 						name: "^", 
 						children: [first_first, {name: parseInt(first_second.name)/2, children:[]}]
 					}
-					new_second_first = obj_clone(new_first_first)
+					new_second_first = node_clone(new_first_first)
 				}
 				if (second_second.name == "0"){
 					new_first_second = {name: "1", children: []};
 					new_second_second = {name: "1", children: []};
 				} else if (second_second.name == "2"){
 					new_first_second = second_first;
-					new_second_second = obj_clone(new_first_second);
+					new_second_second = node_clone(new_first_second);
 				} else {
 					new_first_second = {
 						name: "^", 
 						children: [second_first, {name: parseInt(second_second.name)/2, children:[]}]
 					}
-					new_second_second = obj_clone(new_first_second)
+					new_second_second = node_clone(new_first_second)
 				}
 				first.children = [new_first_first, new_first_second];
 				second.children = [new_second_first, new_second_second];
@@ -197,17 +132,17 @@ function square_collaps(tree){
 
 }
 
-function parse_rational(expr) {
-	lexem_arr = lexify(expr);
+function expression_tree(expr) {
+	lexem_arr = split_to_lexemes(expr);
 	if (!lexem_arr.length) {
 		throw {status: "error", reason: "Expression Is Empty"};
 	}
-	polish_arr = translate_polish(lexem_arr);
-	tree = build_tree(polish_arr);
+	polish_arr = polish_notation(lexem_arr);
+	tree = polish_to_tree(polish_arr);
 	return tree
 }
 
-function translate_polish(lexemes) {
+function polish_notation(lexemes) {
 	var result = new Array();
 	var stack = new Array();
 	for (var i=0; i<lexemes.length; i++){
@@ -263,16 +198,16 @@ function translate_polish(lexemes) {
 	return result;
 }
 
-function is_operand(lexem){return RegExp("^[A-Za-z]$").test(lexem)}
+function is_variable(lexem){return RegExp("^[A-Za-z]$").test(lexem)}
 function is_operator(lexem){return RegExp("^[-|\+|\*|\/|\(|\)|\^]$").test(lexem)}
 function is_digit(lexem){return RegExp("^[0-9]$").test(lexem)}
 function is_number(lexem){return RegExp("^[0-9]+$").test(lexem)}
 
-function lexify(expr){
+function split_to_lexemes(expr){
 	var result = new Array();
 	var temp = "";
 	for (var i = 0; i<expr.length; i++){
-		if (is_operand(expr[i])) {
+		if (is_variable(expr[i])) {
 			if (is_number(temp)){
 				result.push({type:"operand", value: temp});
 				temp = "";
@@ -337,7 +272,7 @@ function lexify(expr){
 	return result;
 }
 
-function build_tree(polish_arr) {
+function polish_to_tree(polish_arr) {
 	var stack = [];
 	for (var i = 0; i<polish_arr.length; i++){
 		token = polish_arr[i];
@@ -361,7 +296,7 @@ function build_tree(polish_arr) {
 	return stack.pop();
 }
 
-function draw_d3(root){
+function print_svg_tree(root){
 	var width = 650;
     var height = 700;
     var margin = 100
@@ -411,6 +346,24 @@ function draw_d3(root){
     d3.select(self.frameElement).style("height", height + "px");
 }
 
-function obj_clone(obj1){
+function node_clone(obj1){
 	return JSON.parse( JSON.stringify( obj1 ) );
+}
+function node_is_equal(obj1, obj2){
+	return JSON.stringify(obj1)==JSON.stringify(obj2);
+}
+
+function send_history(type, expr, result_type, result){
+	$.ajax({
+	  url: "history.php",
+	  context: document.body,
+	  type: "POST",
+	  data: {type: type, expr: expr, result_type: result_type, result:result},
+	  success: function(returnValue){
+            console.log(returnValue);
+        },
+      error: function(request,error) {
+            console.log('An error occurred attempting to get new e-number');
+    	}
+	})
 }
